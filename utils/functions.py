@@ -75,7 +75,7 @@ def get_score(driver, score_pointer, new_row):
     soup = BeautifulSoup(html_source, "html5lib")
     scores = soup.find_all("span", {"class":"flex-grow-1 d-flex flex-column justify-content-center color-white pb-2 pt-1 px-2 px-xl-3 fs-300"})
     score_list = [score.find("span", {"class":"number"}).string for score in scores]
-    print('SCORE_LIST', score_list)
+    # print('SCORE_LIST', score_list)
     # print('SCORE_POINTER', score_pointer)
     # print('LEN_SCORE_LIST', len(score_list))
     if len(score_list) == score_pointer+1:

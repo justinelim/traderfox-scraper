@@ -1,1 +1,1 @@
-TICKERS = ['PEP', 'KO', 'AAPL', 'CL', 'MSFT', 'LIN', 'HZO', 'LCII', 'ABR', 'MAIN', 'META', 'VIPS', 'OLLI', 'JD', 'NVDA', 'MTY', 'BABA', 'LHA', 'TUI1', 'BB', 'WBD', 'T']
+TICKERS = ['META', 'AMZN', 'AAPL', 'NFLX', 'GOOG']
