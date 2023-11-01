@@ -1,1 +1,0 @@
-TICKERS = ['PEP', 'KO', 'AAPL', 'CL', 'MSFT', 'LIN', 'T', 'HZO', 'LCII', 'ABR', 'MAIN', 'META', 'VIPS', 'OLLI', 'JD', 'NVDA', 'MTY', 'BABA', 'LHA', 'TUI1', 'BB', 'GOOG', 'AMZN', 'WBD', 'DVA', 'MPW', 'INTL', 'NRG', 'PARA', 'BLK', 'JELD', 'SFIX', 'CALM', 'ADEN', 'VUSA', 'BRK B', 'CEBL', 'DKILY', 'MCD', 'MMM', 'PG']
