@@ -52,7 +52,7 @@ def initiate_driver():
     driver = webdriver.Chrome(service=service, options=options)
     return driver
 
-def access_stock_url(driver, score_pointer, new_row, ticker):
+def access_stock_url(driver, new_row, ticker):
     driver.delete_all_cookies()
     driver.get(BASE_URL)
     
@@ -68,30 +68,36 @@ def access_stock_url(driver, score_pointer, new_row, ticker):
         .until(EC.presence_of_element_located((By.XPATH, ELEMENTS['search_button']))) \
         .click()
     time.sleep(5)
-    return driver, score_pointer, new_row
+    return driver, new_row
 
-def get_score(driver, score_pointer, new_row):
+def get_score(driver, new_row, tab_idx):
     html_source = driver.page_source
     soup = BeautifulSoup(html_source, "html5lib")
-    scores = soup.find_all("span", {"class":"flex-grow-1 d-flex flex-column justify-content-center color-white pb-2 pt-1 px-2 px-xl-3 fs-300"})
-    score_list = [score.find("span", {"class":"number"}).string for score in scores]
-    # print('SCORE_LIST', score_list)
-    # print('SCORE_POINTER', score_pointer)
-    # print('LEN_SCORE_LIST', len(score_list))
-    if len(score_list) == score_pointer+1:
-        new_row.append(score_list[len(score_list)-1])
-        score_pointer+=1
+    scores = soup.find_all("div", {"class":"col-3 col-lg-2 order-1 order-lg-5 text-center border-l border-color-grey p-0 d-flex flex-column line-height-100"})
+    inner_span = scores[tab_idx].find("span", {"class": "flex-grow-1 d-flex flex-column justify-content-center color-white pb-2 pt-1 px-2 px-xl-3 fs-300"})
+    if inner_span:
+        score_span = inner_span.find("span")
+        
+        score_text = score_span.text.strip()  # Get the text and strip it
+        # print('score_text:', score_text)
+        if "/" in score_text:  # If it's in the form '13/15'
+            extracted_score = score_text.split("/")[0]  # Extract the first part (13)
     else:
-        new_row.append('N/A')
-    return driver, score_pointer, new_row
+        extracted_score = 'N/A'
+    print('extracted_score:', extracted_score)
+    new_row.append(extracted_score)
+    return driver, new_row
 
-def iterate_through_tabs(driver, score_pointer, new_row):
+def iterate_through_tabs(driver, new_row):
     tabs = list(ELEMENTS.values())[3:]
-    for tab in tabs:
+    for tab_idx, tab in enumerate(tabs):
+        print('TAB', list(ELEMENTS.keys())[list(ELEMENTS.values()).index(tab)])
         WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, tab))).click()
         time.sleep(5)
-        driver, score_pointer, new_row = get_score(driver, score_pointer, new_row)
-    return driver, score_pointer, new_row
+        driver, new_row = get_score(driver, new_row, tab_idx)
+    print('new_row', new_row)
+    
+    return driver, new_row
 
 def update_gsheet(df: pd.DataFrame):
     scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']

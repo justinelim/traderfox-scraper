@@ -17,13 +17,13 @@ def main():
 
     for ticker in TICKERS:
         try:
-            print(f'{ticker} scraping started..')
-            score_pointer = 0
+            print(f'\n{ticker} scraping started..')
+            # score_pointer = 0
             new_row = []
             new_row.append(pd.to_datetime('now'))
             new_row.append(ticker)
-            driver, score_pointer, new_row = access_stock_url(driver, score_pointer, new_row, ticker)
-            driver, score_pointer, new_row = iterate_through_tabs(driver, score_pointer, new_row)
+            driver, new_row = access_stock_url(driver, new_row, ticker)
+            driver, new_row = iterate_through_tabs(driver, new_row)
             print(f'{ticker} scraping done! New row created: {new_row}')
             df.loc[len(df.index)] = new_row
         except Exception as e:
